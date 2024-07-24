@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { POSTS } from "@/Post";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function App() {
   const [posts, setPosts] = useState<any>([]);
@@ -20,7 +21,6 @@ export default function App() {
         console.log(err);
       });
   }, []);
-
   /**
    * used to apply pagination on posts
    * @param {String} key
@@ -42,7 +42,7 @@ export default function App() {
   };
 
   const allPosts = (
-    <div className="flex flex-wrap gap-3">
+    <div className=" flex-wrap gap-3">
       {posts.map((post: any) => {
         return (
           <div key={post.postId} className="m-3 p-5 border border-dashed">
@@ -63,7 +63,20 @@ export default function App() {
           here
         </a>
       </p>
-      <div>{allPosts}</div>
+      <InfiniteScroll
+        dataLength={520} //This is important field to render the next data
+        next={() => fetchMorePosts(Number(lastKey))}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        {allPosts}
+      </InfiniteScroll>
+      {/* <div>{allPosts}</div>
       <div style={{ textAlign: "center" }}>
         {nextPosts_loading ? (
           <p>Loading..</p>
@@ -74,7 +87,7 @@ export default function App() {
         ) : (
           <span>You are up to date!</span>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

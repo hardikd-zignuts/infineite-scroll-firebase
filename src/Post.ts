@@ -61,6 +61,7 @@ export const POSTS = {
         });
         lastKey = doc.data().postId;
       });
+      console.log(posts);
       return { posts, lastKey };
     } catch (e) {
       console.log(e);
